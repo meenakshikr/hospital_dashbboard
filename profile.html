@@ -1,0 +1,387 @@
+<html>
+<head>
+    <title>
+        Profile
+    </title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            max-width: 400px;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header i {
+            font-size: 24px;
+            cursor: pointer; /* Make the icon clickable */
+        }
+        .header .edit {
+            color: #ff3b30;
+            font-size: 16px;
+            cursor: pointer; /* Make the edit text clickable */
+        }
+        .header .title {
+            flex-grow: 1;
+            text-align: left;
+            margin-left: 10px;
+        }
+        .profile {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .profile img {
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            margin-right: 20px;
+        }
+        .profile-info {
+            font-size: 16px;
+        }
+        .profile-info .name {
+            font-weight: bold;
+        }
+        .profile-info .details {
+            color: #888;
+        }
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        .tabs div {
+            padding: 10px 0;
+            font-size: 16px;
+            color: #888;
+            cursor: pointer;
+        }
+        .tabs .active {
+            color: #000;
+            border-bottom: 2px solid #000;
+        }
+        .info {
+            margin-top: 20px;
+        }
+        .info .item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        .info .item .label {
+            font-weight: bold;
+        }
+        .info .item .value {
+            color: #888;
+        }
+        .info .item .verify {
+            color: #ff3b30;
+            cursor: pointer;
+        }
+        .health-trends, .lab-history {
+            margin-top: 20px;
+        }
+        .health-trends .title, .lab-history .title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .health-trends .trends {
+            display: flex;
+            justify-content: space-around;
+        }
+        .health-trends .trend {
+            text-align: center;
+        }
+        .health-trends .trend img {
+            width: 40px;
+            height: 40px;
+        }
+        .health-trends .trend .percentage {
+            font-weight: bold;
+            color: #ff3b30;
+        }
+        .health-trends .trend .status {
+            color: #888;
+        }
+        .lab-history .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        .lab-history .item img {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .lab-history .item .details {
+            flex-grow: 1;
+        }
+        .lab-history .item .details .name {
+            font-weight: bold;
+        }
+        .lab-history .item .details .lab {
+            color: #888;
+        }
+        .lab-history .item .price {
+            font-weight: bold;
+        }
+        .hidden {
+            display: none;
+        }
+        /* Edit Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            padding-top: 60px; /* Location of the box */
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html"><i class="fas fa-arrow-left"></i></a> <!-- Add link for back navigation -->
+            <span class="title">Profile</span>
+            <span class="edit" onclick="openEditModal()">Edit</span> <!-- Open edit modal -->
+        </div>
+        <div class="profile">
+            <img alt="Profile picture of a person" height="60" src="8b167af653c2399dd93b952a48740620.jpg" width="60"/>
+            <div class="profile-info">
+                <div class="name">Armaan Deol ( You )</div>
+                <div class="details">29/08/2004 - 20 Yrs old</div>
+            </div>
+        </div>
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('personal')">Personal</div>
+            <div class="tab" onclick="showTab('medical')">Medical History</div>
+            <div class="tab" onclick="showTab('social')">Social History</div>
+            <div class="tab" onclick="showTab('family')">Family</div>
+        </div>
+
+        <!-- Personal Info Section -->
+        <div id="personal" class="info">
+            <div class="item">
+                <div class="label">Email</div>
+                <div class="value">
+                    <i class="fas fa-check-circle" style="color: green;"></i>
+                    armaan@gmail.com
+                </div>
+            </div>
+            <div class="item">
+                <div class="label">Mobile number</div>
+                <div class="value">
+                    +91 99239 32993
+                    <span class="verify" onclick="verifyMobile()">Verify Now</span>
+                </div>
+            </div>
+            <div class="item">
+                <div class="label">Blood Group</div>
+                <div class="value">A+</div>
+            </div>
+            <div class="item">
+                <div class="label">Height</div>
+                <div class="value">6.0 feet</div>
+            </div>
+            <div class="item">
+                <div class="label">Weight</div>
+                <div class="value">80 Kg</div>
+            </div>
+            <div class="item">
+                <div class="label">Allergies</div>
+                <div class="value">None</div>
+            </div>
+        </div>
+
+        <!-- Medical History Section -->
+        <div id="medical" class="info hidden">
+            <div class="item">
+                <div class="label">Last Checkup</div>
+                <div class="value">09/08/2024</div>
+            </div>
+            <div class="item">
+                <div class="label">Chronic Conditions</div>
+                <div class="value">None</div>
+            </div>
+            <div class="item">
+                <div class="label">Medications</div>
+                <div class="value">None</div>
+            </div>
+        </div>
+
+        <!-- Social History Section -->
+        <div id="social" class="info hidden">
+            <div class="item">
+                <div class="label">Smoking</div>
+                <div class="value">No</div>
+            </div>
+            <div class="item">
+                <div class="label">Alcohol</div>
+                <div class="value">Occasional</div>
+            </div>
+            <div class="item">
+                <div class="label">Exercise</div>
+                <div class="value">3 times a week</div>
+            </div>
+        </div>
+
+        <!-- Family History Section -->
+        <div id="family" class="info hidden">
+            <div class="item">
+                <div class="label">Father</div>
+                <div class="value">Sukhdev Singh</div>
+            </div>
+            <div class="item">
+                <div class="label">Mother</div>
+                <div class="value">Harpreet Kaur</div>
+            </div>
+        </div>
+
+        <div class="health-trends">
+            <div class="title">Health Trends</div>
+            <div class="trends">
+                <div class="trend">
+                    <img alt="Health trend" src="https://via.placeholder.com/40">
+                    <div class="percentage">90%</div>
+                    <div class="status">Good</div>
+                </div>
+                <div class="trend">
+                    <img alt="Health trend" src="https://via.placeholder.com/40">
+                    <div class="percentage">80%</div>
+                    <div class="status">Average</div>
+                </div>
+                <div class="trend">
+                    <img alt="Health trend" src="https://via.placeholder.com/40">
+                    <div class="percentage">70%</div>
+                    <div class="status">Below Average</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="lab-history">
+            <div class="title">Lab History</div>
+            <div class="item">
+                <img alt="Lab test" src="https://via.placeholder.com/40">
+                <div class="details">
+                    <div class="name">Blood Test</div>
+                    <div class="lab">Kapoor's Labs</div>
+                </div>
+                <div class="price">₹1500</div>
+            </div>
+            <div class="item">
+                <img alt="Lab test" src="https://via.placeholder.com/40">
+                <div class="details">
+                    <div class="name">X-Ray</div>
+                    <div class="lab">Birla Mohanty Labs</div>
+                </div>
+                <div class="price">₹800</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <h2>Edit Profile</h2>
+            <form>
+                <label for="email">Email:</label>
+                <input type="email" id="email" value="ceo@wolfsoft.in"><br><br>
+                <label for="mobile">Mobile Number:</label>
+                <input type="text" id="mobile" value="+91 99239 32993"><br><br>
+                <label for="bloodGroup">Blood Group:</label>
+                <input type="text" id="bloodGroup" value="A+"><br><br>
+                <label for="height">Height:</label>
+                <input type="text" id="height" value="5.9 feet"><br><br>
+                <label for="weight">Weight:</label>
+                <input type="text" id="weight" value="70 Kg"><br><br>
+                <label for="allergies">Allergies:</label>
+                <input type="text" id="allergies" value="None"><br><br>
+                <input type="button" value="Save" onclick="saveChanges()">
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tab) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.info');
+            tabs.forEach(t => t.classList.add('hidden'));
+            // Show selected tab
+            document.getElementById(tab).classList.remove('hidden');
+            // Update active tab styling
+            document.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`.tabs .tab[onclick*='${tab}']`).classList.add('active');
+        }
+
+        function openEditModal() {
+            document.getElementById("editModal").style.display = "block";
+        }
+
+        function closeEditModal() {
+            document.getElementById("editModal").style.display = "none";
+        }
+
+        function saveChanges() {
+            // Add code here to save changes
+            alert('Changes saved!');
+            closeEditModal();
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById("editModal");
+            if (event.target === modal) {
+                closeEditModal();
+            }
+        }
+
+        function verifyMobile() {
+            alert('Verification link sent to your mobile number.');
+        }
+    </script>
+</body>
+</html>

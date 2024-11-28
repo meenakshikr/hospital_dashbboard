@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor in 10 Minutes - Arogya Saarthi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <style>
+        body {
+            background-color: #e0f7fa; /* Soft Blue */
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .form-container {
+            max-width: 650px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s;
+        }
+
+        .form-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .chatbox-container {
+            margin-top: 20px;
+            background: linear-gradient(145deg, #e8f5e9, #f9fbe7); /* Pale Mint Green */
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .input-container input {
+            flex-grow: 1;
+            border: 2px solid #81d4fa; /* Light Blue */
+            border-radius: 10px;
+            padding: 12px;
+            transition: border-color 0.3s;
+            font-size: 16px;
+        }
+
+        .input-container input:focus {
+            border-color: #039be5; /* Darker Blue */
+            outline: none;
+        }
+
+        .input-container button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            transition: transform 0.3s, background-color 0.3s;
+            background: linear-gradient(145deg, #81d4fa, #039be5); /* Light to Dark Blue */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .input-container button:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-area {
+            height: 350px;
+            overflow-y: auto;
+            border: 2px solid #81d4fa; /* Light Blue */
+            border-radius: 12px;
+            padding: 15px;
+            background: #f1f8e9; /* Light Green */
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            font-size: 14px;
+        }
+
+        .chat-area .message {
+            max-width: 70%;
+            padding: 10px 15px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.3s ease-in-out;
+        }
+
+        .chat-area .message.user {
+            background-color: #2196f3; /* Blue */
+            color: white;
+            align-self: flex-end;
+        }
+
+        .chat-area .message.ai {
+            background-color: #fff3e0; /* Light Peach */
+            color: #333;
+            align-self: flex-start;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            text-align: center;
+            color: #1e3a8a; /* Soft Navy Blue */
+            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        label {
+            font-weight: 600;
+        }
+
+        .navbar {
+            background: linear-gradient(145deg, #039be5, #0288d1); /* Darker Blue */
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar a {
+            color: white;
+            font-weight: 500;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .loading {
+            display: none;
+            font-size: 14px;
+            color: #2196f3; /* Blue */
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <h1 class="text-l">Doctor in 10 Minutes</h1>
+        <div>
+            <a href="#about" onclick="openModal()">About</a>
+        </div>
+    </div>
+
+    <!-- Patient Registration Form -->
+    <div class="form-container" id="registration">
+        <h2 class="text-3xl">Patient Registration</h2>
+
+        <div class="mt-4">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" placeholder="Enter your full name" required class="w-full border-gray-300 p-2 rounded-lg shadow-sm">
+        </div>
+
+        <div class="mt-4">
+            <label for="phoneNumber">Phone Number</label>
+            <input type="tel" id="phoneNumber" placeholder="Enter your phone number" required class="w-full border-gray-300 p-2 rounded-lg shadow-sm">
+        </div>
+
+        <div class="mt-4 flex-container flex gap-4">
+            <div class="flex-1">
+                <label for="ageInput">Age</label>
+                <input type="number" id="ageInput" placeholder="Enter your age" min="0" required class="w-full border-gray-300 p-2 rounded-lg shadow-sm">
+            </div>
+            <div class="flex-1">
+                <label for="gender">Biological Sex</label>
+                <select id="gender" required class="w-full border-gray-300 p-2 rounded-lg shadow-sm">
+                    <option value="" disabled selected>Select your gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="mt-6">
+            <button id="continueBtn" class="bg-gradient-to-r from-blue-500 to-blue-700 text-white w-full py-3 rounded-lg animated-button shadow-lg">Continue with AI Advisor</button>
+        </div>
+    </div>
+
+    <!-- AI Advisor Chatbox -->
+    <div class="chatbox-container" id="chat">
+        <h2><b>Arogya Saarthi - AI Advisor</b></h2>
+        <p class="text-center mb-4">Your virtual advisor for healthcare guidance and recommendations.</p>
+        <div class="chat-area" id="chat-area">
+            <!-- Chat messages will appear here -->
+        </div>
+        <div class="loading" id="loading">AI is typing...</div>
+        <div class="input-container mt-4">
+            <input type="text" id="user-input" placeholder="Describe your symptoms..." required class="p-3">
+            <button onclick="sendMessage()" class="bg-blue-500 text-white animated-button shadow-lg">Send</button>
+            <button onclick="startVoiceInput()" class="bg-gray-500 text-white animated-button shadow-lg">🎤</button>
+        </div>
+    </div>
+
+    <!-- Modal for About -->
+    <div id="aboutModal" class="modal">
+        <div class="modal-content">
+            <h2>About Arogya Saarthi</h2>
+            <p class="text-center mb-4">
+                Your trusted AI advisor for patient support, offering personalized healthcare advice based on your input. 
+                From symptom analysis to wellness tips, we aim to empower you with knowledge and guidance for your health journey. 
+                Experience real-time assistance, 24/7.
+            </p>
+            <button onclick="closeModal()" class="bg-blue-500 text-white py-2 px-4 rounded-lg">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Handle patient registration and show chatbox
+        document.getElementById('continueBtn').addEventListener('click', function () {
+            document.getElementById('registration').style.display = 'none';
+            document.getElementById('chat').style.display = 'block';
+        });
+
+        // Open and close modal
+        function openModal() {
+            document.getElementById('aboutModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('aboutModal').style.display = 'none';
+        }
+
+        // Append message to chat area
+        function appendMessage(message, sender) {
+            const chatArea = document.getElementById('chat-area');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = message ${sender};
+            messageDiv.innerText = message;
+            chatArea.appendChild(messageDiv);
+            chatArea.scrollTop = chatArea.scrollHeight; // Auto-scroll to the latest message
+        }
+
+        // Handle user input submission
+        function sendMessage() {
+            const userInput = document.getElementById('user-input').value;
+            if (!userInput.trim()) return;
+
+            // Append user message to chat area
+            appendMessage(userInput, 'user');
+            document.getElementById('user-input').value = '';
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
+
+            // Simulate AI response
+            setTimeout(() => {
+                let aiResponse = '';
+
+                // Check user input and provide appropriate responses
+                if (/fever/i.test(userInput)) {
+                    aiResponse = 'I see you're experiencing a fever. Make sure to stay hydrated. If your fever persists above 102°F (39°C) or if you develop additional symptoms like rash, difficulty breathing, or persistent vomiting, please consult a healthcare professional.;
+                } else if (/cold/i.test(userInput) || /cough/i.test(userInput)) {
+                    aiResponse = It sounds like you might have a cold. Rest, hydration, and over-the-counter medications can help alleviate symptoms. However, if your symptoms worsen, such as experiencing a high fever or severe cough, it may be wise to consult a physician or an ENT specialist.;
+                } else if (/headache/i.test(userInput)) {
+                    aiResponse = Headaches can be caused by various factors. Try to stay hydrated and consider resting in a dark, quiet room. If your headache persists or is severe, please consult a neurologist.;
+                } else if (/nausea/i.test(userInput)) {
+                    aiResponse = Nausea can be quite uncomfortable. Consider sipping ginger tea or taking deep breaths. If nausea persists or is accompanied by severe abdominal pain, consult a gastroenterologist.;
+                } else {
+                    aiResponse = You mentioned: "${userInput}". Could you provide more details about your symptoms?;
+                }
+
+                appendMessage(aiResponse, 'ai');
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
+            }, 1500);
+        }
+
+        // Voice input feature (placeholder, to be implemented)
+        function startVoiceInput() {
+            // This feature can be implemented using Web Speech API
+            alert("Voice input feature is currently under development.");
+        }
+    </script>
+</body>
+
+</html>

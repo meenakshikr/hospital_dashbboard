@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height">
+    <title>Mental Health Support</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet"/>
+    <style>
+        /* Container for the entire page */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, #C5D3C2, #87BBB6);
+            color: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            animation: slide-in 1s ease-in-out;
+        }
+
+        .header button {
+            font-size: 1.5rem;
+            background: transparent;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 30px;
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #4A7A74;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.2rem;
+            color: #555;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        /* Chatbox */
+        .chatbox-container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #FFFFFF;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-area {
+            position: relative; /* Allow absolutely positioned elements */
+            flex-grow: 1;
+            overflow-y: auto;
+            background: #E0F2FE;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: inset 0 6px 16px rgba(0, 0, 0, 0.1);
+            height: 400px; /* Fixed height for chat area */
+            
+        }
+
+        .therapist-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%; /* Cover full chat area */
+            height: 100%; /* Cover full chat area */
+            object-fit: cover; /* Maintain aspect ratio */
+            z-index: 0; /* Send to back */
+        }
+
+        .message {
+            position: relative; /* Ensure messages are above the image */
+            z-index: 1; /* Ensure messages are on top */
+            margin-bottom: 10px;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message.ai {
+            justify-content: flex-start;
+        }
+
+        .message p {
+            max-width: 70%;
+            padding: 12px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .message.user p {
+            background: #C5D3C2;
+            color: #fff;
+        }
+
+        .message.ai p {
+            background: #87BBB6;
+            color: #4A7A74;
+        }
+
+        /* Input Section */
+        .input-container {
+            display: flex;
+           align-items: left;
+            margin-top: 10px;
+            
+        }
+
+        .input-container input {
+            flex-grow: 1;
+            /*padding: 12px;*/
+            border-radius: 25px;
+            border: 2px solid #4A7A74;
+            outline: none;
+            background: #fff;
+            box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.1);
+            /*margin-right: 10px;*/
+            align-items:flex-start;
+        }
+
+        .input-container button {
+            
+            background: #4A7A74;
+            color: #fff;
+            padding: 10px 10px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .input-container button:hover {
+            
+            background: #3B6B62;
+        }
+
+        /* Scrollbar styling for chatbox */
+        .chat-area::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-area::-webkit-scrollbar-thumb {
+            background-color: #4A7A74;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-blue-50">
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <!-- Header Section -->
+        <header class="header">
+            <div class="flex items-center">
+                <button class="text-2xl">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Introduction -->
+            <section class="mb-8">
+                <h1>Mental Health Support</h1>
+                <p>Welcome to our Mental Health Support page. Here, you’ll find valuable resources, essential information, and a chatbox where you can connect with our dedicated support team. Your mental well-being is our priority, and we’re here to listen, support, and guide you whenever you need it.</p>
+            </section>
+
+            <!-- Chatbox Section -->
+            <div class="chatbox-container">
+                <div class="chat-area" id="chat-area">
+                    <img src="gettyimages-1383880527-170667a1-acbe7402026b89a53d85fe95be3476ab4919d788.jpg" alt="Mental Health Therapist" class="therapist-image" />
+                    <!-- Chat messages will appear here -->
+                </div>
+
+                <div class="input-container">
+                    <input type="text" id="user-input" placeholder="How can we assist you today?">
+                    <button onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const inputField = document.getElementById('user-input');
+            const userMessage = inputField.value.trim(); // Get user input
+            if (userMessage !== "") {
+                displayMessage(userMessage, 'user'); // Display user message
+                inputField.value = ''; // Clear input field
+
+                // Simulate AI response after a short delay
+                setTimeout(() => {
+                    const aiResponse = generateAIResponse(userMessage);
+                    displayMessage(aiResponse, 'ai');
+                }, 1000);
+            }
+        }
+
+        function displayMessage(message, sender) {
+            const chatArea = document.getElementById('chat-area');
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', sender);
+            const messageText = document.createElement('p');
+            messageText.textContent = message;
+            messageElement.appendChild(messageText);
+            chatArea.appendChild(messageElement);
+            chatArea.scrollTop = chatArea.scrollHeight; // Scroll to the bottom
+        }
+
+        // Function to generate AI response based on the user's input
+        function generateAIResponse(userMessage) {
+            // You can expand this logic to customize responses based on user input
+            if (userMessage.includes("hello")) {
+                return "Hello! How can I assist you today?";
+            } else if (userMessage.includes("help")) {
+                return "I'm here for you. What do you need help with?";
+            } else {
+                return "Thank you for sharing your thoughts. How else can I support you?";
+            }
+        }
+    </script>
+</body>
+</html>
